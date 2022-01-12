@@ -7,9 +7,12 @@ stages{
             image 'node:7-alpine'
             }
          }
+	when{
+            changeset "**/result/**"
+        }
         steps{
             echo 'Compiling Result app...'
-            dir('worker'){
+            dir('result'){
                 sh 'npm install'
             }
         }
@@ -23,6 +26,7 @@ stages{
          }
          when{
             branch 'master'
+	    changeset "**/result/**"	
         }
         steps{
             echo 'Running Unit Tests result app...'
@@ -37,6 +41,7 @@ stages{
         agent any
         when{
             branch 'master'
+	    changeset "**/result/**"
         }
         steps{
             echo 'Packaging result with docker'
