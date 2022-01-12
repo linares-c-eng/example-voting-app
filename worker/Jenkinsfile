@@ -8,9 +8,9 @@ pipeline{
 
     stages{
         stage('build'){
-		when{
-                        changeset "**/worker/**"
-                }
+
+
+
 
             steps{
                 echo 'Compiling worker app'
@@ -20,9 +20,9 @@ pipeline{
             }
         }
         stage('test'){
-		 when{
-                        changeset "**/worker/**"
-                }
+
+
+
 
             steps{
                 echo 'Running Unit Tests on worker app'
@@ -34,7 +34,7 @@ pipeline{
         stage('package'){
 		when{
 			branch 'master'
-			changeset "**/worker/**"
+		
 		}
             steps{
                 echo 'Packaging worker app'
@@ -47,7 +47,7 @@ pipeline{
 	stage('docker-package'){
 		when{
 			branch 'master'
-			changeset "**/worker/**"
+			
 		}
             steps{
                 echo 'Packaging worker app with Docker'
