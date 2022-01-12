@@ -1,13 +1,15 @@
-pipeline{
-    agent{
-	docker{
-		image 'maven:3.6.1-jdk-8-alpine'
-		args '-v $HOME/.m2:/root/.m2'
-	}
-	}
+pipeline{	
+ 	agent none
 
     stages{
-        stage('build'){
+        
+	stage('build'){
+	agent{
+        	docker{
+                	image 'maven:3.6.1-jdk-8-alpine'
+                	args '-v $HOME/.m2:/root/.m2'
+        	}
+       	 }	
 
 
 
@@ -20,11 +22,13 @@ pipeline{
             }
         }
         stage('test'){
-
-
-
-
-            steps{
+		agent{
+        		docker{
+               		 image 'maven:3.6.1-jdk-8-alpine'
+                	args '-v $HOME/.m2:/root/.m2'
+        		}
+        	}
+		step{		
                 echo 'Running Unit Tests on worker app'
                  dir('worker'){
                     sh 'mvn clean test'
@@ -35,7 +39,14 @@ pipeline{
 		when{
 			branch 'master'
 		
-		}
+		} 
+		agent{
+        		docker{
+                	image 'maven:3.6.1-jdk-8-alpine'
+                	args '-v $HOME/.m2:/root/.m2'
+        		}	
+       		 }	
+
             steps{
                 echo 'Packaging worker app'
                 dir('worker'){
@@ -48,14 +59,14 @@ pipeline{
 		when{
 			branch 'master'
 			
-		}
+		} 
+		agent any
             steps{
                 echo 'Packaging worker app with Docker'
                script{
                    docker.withRegistry('https://index.docker.io/v1','dockerlogin'){
                        def workerImage = docker.build("lruizhpe/repo:v${env.BUILD_ID}","./worker")
                        workerImage.push()
-                       workerImage.push("${env.BRANCH_NAME}")
                    }
                }
             }
