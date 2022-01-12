@@ -5,7 +5,8 @@ stages{
         agent{
             docker{
             image 'python:2.7.16-slim'
-            }
+            args '--user root' 
+	   }
          }
          when{
              changeset "**/vote/**"
@@ -22,7 +23,8 @@ stages{
         agent{
             docker{
             image 'python:2.7.16-slim'
-            }
+            args '--user root'   
+	 }
          }
          when{
             branch 'master'
