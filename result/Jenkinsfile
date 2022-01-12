@@ -4,7 +4,7 @@ stages{
     stage('build'){
         agent{
             docker{
-            image: node:7-alpine
+            image:  'node:7-alpine'
             }
          }
         steps{
@@ -18,7 +18,7 @@ stages{
     stage('test'){
         agent{
             docker{
-            image: node:7-alpine
+            image: 'node:7-alpine'
             }
          }
          when{
